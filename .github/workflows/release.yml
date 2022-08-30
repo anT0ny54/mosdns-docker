@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: /mosdns1/app:latest
+          tags: user/app:latest
