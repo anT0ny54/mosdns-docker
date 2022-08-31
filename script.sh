@@ -1,0 +1,58 @@
+#!/bin/sh
+
+HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
+NEW_HOSTS="hosts"
+HOSTS_PATH="/etc/mosdns/hosts"
+
+# Grab hosts file
+wget -O $NEW_HOSTS $HOSTS_URL
+
+cp -v $NEW_HOSTS $HOSTS_PATH
+
+DAT_PATH=${DAT_PATH:-/etc/mosdns}
+
+DOWNLOAD_LINK_GEOIP="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
+DOWNLOAD_LINK_GEOSITE="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
+file_ip='geoip.dat'
+file_dlc='geosite.dat'
+dir_tmp="$(mktemp -d)"
+
+download_files() {
+  if ! wget -q --no-cache -O "${dir_tmp}/${2}" "${1}"; then
+    echo 'error: Download failed! Please check your network or try again.'
+    exit 1
+  fi
+  if ! wget -q --no-cache -O "${dir_tmp}/${2}.sha256sum" "${1}.sha256sum"; then
+    echo 'error: Download failed! Please check your network or try again.'
+    exit 1
+  fi
+}
+
+check_sum() {
+  (
+    cd "${dir_tmp}" || exit
+    for i in "${dir_tmp}"/*.sha256sum; do
+      if ! sha256sum -c "${i}"; then
+        echo 'error: Check failed! Please check your network or try again.'
+        exit 1
+      fi
+    done
+  )
+}
+
+install_file() {
+  mkdir -p ${DAT_PATH} 2>/dev/null
+  cp -af "${dir_tmp}"/${file_dlc} "${DAT_PATH}"/${file_dlc}
+  cp -af "${dir_tmp}"/${file_ip} "${DAT_PATH}"/${file_ip}
+  rm -r "${dir_tmp}"
+}
+
+main() {
+  echo "Updating geoip.dat and geosite.dat"
+  download_files $DOWNLOAD_LINK_GEOIP $file_ip
+  download_files $DOWNLOAD_LINK_GEOSITE $file_dlc
+  check_sum
+  install_file
+}
+
+main "$@"
