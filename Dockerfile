@@ -1,3 +1,13 @@
+FROM alpine:3.3
+
+ADD crontab.txt /crontab.txt
+ADD script.sh /script.sh
+COPY entry.sh /entry.sh
+RUN chmod 755 /script.sh /entry.sh
+RUN /usr/bin/crontab /crontab.txt
+
+CMD ["/entry.sh"]
+
 FROM --platform=${TARGETPLATFORM} golang:alpine as builder
 ARG CGO_ENABLED=0
 ARG TAG
