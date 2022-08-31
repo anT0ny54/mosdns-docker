@@ -12,7 +12,6 @@ RUN apk add --update git \
 	&& go build -ldflags "-s -w -X main.version=${TAG}" -trimpath -o mosdns
 
 FROM --platform=${TARGETPLATFORM} alpine:latest
-LABEL maintainer="Sgit <github.com/Sagit-chu>"
 
 COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
@@ -22,11 +21,6 @@ ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
-ADD crontab.txt /crontab.txt
-ADD script.sh /script.sh
-COPY hosts /hosts
-COPY hosts /etc/mosdns/hosts
-RUN /usr/bin/crontab /crontab.txt
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod +x /entrypoint.sh
