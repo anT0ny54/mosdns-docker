@@ -1,1 +1,0 @@
-0 */12 * * * /script.sh >> /var/log/script.log
