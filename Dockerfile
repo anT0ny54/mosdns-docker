@@ -22,6 +22,9 @@ ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
+ADD crontab.txt /crontab.txt
+ADD script.sh /script.sh
+RUN /usr/bin/crontab /crontab.txt
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod +x /entrypoint.sh
