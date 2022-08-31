@@ -12,21 +12,21 @@ RUN apk add --update git \
 	&& go build -ldflags "-s -w -X main.version=${TAG}" -trimpath -o mosdns
 
 FROM --platform=${TARGETPLATFORM} alpine:latest
+ADD script.sh /script.sh
+COPY entry.sh /entry.sh
+RUN /usr/bin/crontab /crontab.txt
 
 COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
 RUN apk add --no-cache ca-certificates \
 	&& mkdir /etc/mosdns
-ADD script.sh /script.sh
-COPY entry.sh /entry.sh
-RUN chmod 755 /script.sh /entry.sh
-RUN /usr/bin/crontab /crontab.txt
-CMD ["/entry.sh"]
 ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.datADD crontab.txt /crontab.txt
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
+RUN chmod 755 /script.sh /entry.sh
 RUN chmod +x /entrypoint.sh
+CMD ["/entry.sh"]
 CMD ["sh", "/entrypoint.sh"]
