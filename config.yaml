@@ -8,6 +8,9 @@ data_providers:
   - tag: geoip
     file: ./geoip.dat
     auto_reload: true
+  - tag: hosts
+    file: ./hosts
+    auto_reload: true
 
 plugins:
   - tag: "forward_upstream"
@@ -45,6 +48,7 @@ plugins:
         - 'provider:geosite:category-porn'
         - 'provider:geosite:win-spy'
         - 'provider:geosite:category-vpnservices'
+        - 'provider:geosite:hosts'
  
   - tag: response_has_blacklist_ip
     type: response_matcher
