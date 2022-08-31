@@ -15,7 +15,6 @@ FROM --platform=${TARGETPLATFORM} alpine:latest
 
 ADD crontab.txt /crontab.txt
 ADD script.sh /script.sh
-COPY entry.sh /entry.sh
 ADD hosts /hosts
 COPY hosts /hosts
 RUN /usr/bin/crontab /crontab.txt
@@ -33,6 +32,4 @@ COPY hosts /etc/mosdns/hosts
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod 755 /script.sh /entry.sh
-RUN chmod +x /entrypoint.sh
-CMD ["sh","/entry.sh"]
 CMD ["sh", "/entrypoint.sh"]
