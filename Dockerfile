@@ -1,13 +1,3 @@
-FROM alpine:3.3
-
-ADD crontab.txt /crontab.txt
-ADD script.sh /script.sh
-COPY entry.sh /entry.sh
-RUN chmod 755 /script.sh /entry.sh
-RUN /usr/bin/crontab /crontab.txt
-
-CMD ["/entry.sh"]
-
 FROM --platform=${TARGETPLATFORM} golang:alpine as builder
 ARG CGO_ENABLED=0
 ARG TAG
@@ -30,7 +20,12 @@ RUN apk add --no-cache ca-certificates \
 ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
-ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.datADD crontab.txt /crontab.txt
+ADD script.sh /script.sh
+COPY entry.sh /entry.sh
+RUN chmod 755 /script.sh /entry.sh
+RUN /usr/bin/crontab /crontab.txt
+CMD ["/entry.sh"]
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod +x /entrypoint.sh
