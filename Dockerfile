@@ -31,5 +31,5 @@ ADD hosts /etc/mosdns/hosts
 COPY hosts /etc/mosdns/hosts
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
-RUN chmod 755 /script.sh /entry.sh
+RUN chmod +x /entrypoint.sh
 CMD ["sh", "/entrypoint.sh"]
