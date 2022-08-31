@@ -48,7 +48,7 @@ plugins:
         - 'provider:geosite:category-porn'
         - 'provider:geosite:win-spy'
         - 'provider:geosite:category-vpnservices'
-        - 'provider:geosite:hosts'
+        - 'provider:hosts'
  
   - tag: response_has_blacklist_ip
     type: response_matcher
