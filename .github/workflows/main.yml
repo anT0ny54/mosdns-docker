@@ -1,0 +1,34 @@
+name: Update blocklist
+on:
+  push:
+    paths-ignore:
+    - '.github/**'
+    - 'lists/**'
+    - '*.txt'
+    - '*.yaml'
+    - '*.conf'
+    - '*.txt'
+    - '*.sh'
+    - '*.py'
+    - 'README.md'
+  schedule:
+    - cron: '0 21 27 * *'
+
+jobs:
+  build-blocklist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v3
+
+      - name: Build blocklist
+        uses: actions/checkout@v3
+      - run: |
+          chmod +x ./updatehosts.sh
+          ./updatehosts.sh
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "blocklist"
+          git push
+          
