@@ -8,8 +8,6 @@ if [ ! -f /etc/mosdns/config.yaml ]; then
     	cp -u /hosts /etc/mosdns/hosts
 fi
 
-sh /script.sh
-
 sed -i "s|PORT_PLACEHOLDER|${PORT}|;s|PATH_PLACEHOLDER|${DOH_PATH}|" /etc/mosdns/config.yaml
 
 /usr/bin/mosdns start --dir /etc/mosdns
