@@ -15,10 +15,6 @@ NEW_HOSTS="hosts"
 HOSTS_PATH="./etc/mosdns/hosts"
 
 # Grab hosts file
-wget -O $NEW_HOSTS $HOSTS_URL
-
-cp -v $NEW_HOSTS $HOSTS_PATH
-
 DAT_PATH=${DAT_PATH:-/etc/mosdns}
 
 DOWNLOAD_LINK_GEOIP="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"

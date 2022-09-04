@@ -11,5 +11,3 @@ fi
 sed -i "s|PORT_PLACEHOLDER|${PORT}|;s|PATH_PLACEHOLDER|${DOH_PATH}|" /etc/mosdns/config.yaml
 
 /usr/bin/mosdns start --dir /etc/mosdns
-
-/usr/sbin/crond -f -l 8
