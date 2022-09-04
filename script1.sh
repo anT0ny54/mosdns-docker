@@ -8,7 +8,7 @@ if [ -f /etc/mosdns/hosts ]
   then
     echo "Original hosts file found."
   else
-    cp /etc/hosts /etc/hosts.original
+    cp /etc/mosdns/hosts /etc/mosdns/hosts.original
 fi
 
 cp /etc/mosdns/hosts.original /etc/mosdns/hosts
