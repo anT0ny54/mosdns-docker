@@ -11,7 +11,7 @@ if [ -f /etc/mosdns/hosts ]
     cp /etc/hosts /etc/hosts.original
 fi
 
-cp /etc/hosts.original /etc/hosts
+cp /etc/mosdns/hosts.original /etc/mosdns/hosts
 
 wget -O /etc/mosdns/hosts https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt
 
