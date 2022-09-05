@@ -1,59 +1,40 @@
 #!/bin/sh
 
-# This shell script to install the latest release of geoip.dat and geosite.dat:
+LOGGER_TAG=v2ray-geodata-updater
 
-# The URL of the script project is:
-# https://github.com/v2fly/fhs-install-v2ray
-
-# Modified by wy580477 for customized container <https://github.com/wy580477>
-
-# You can set this variable whatever you want in shell session right before running this script by issuing:
-# export DAT_PATH='/usr/local/lib/v2ray'
-
-DAT_PATH=${DAT_PATH:-/etc/mosdns}
-
-DOWNLOAD_LINK_GEOIP="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
-DOWNLOAD_LINK_GEOSITE="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
-file_ip='geoip.dat'
-file_dlc='geosite.dat'
-dir_tmp="$(mktemp -d)"
-
-download_files() {
-  if ! wget -q --no-cache -O "${dir_tmp}/${2}" "${1}"; then
-    echo 'error: Download failed! Please check your network or try again.'
-    exit 1
-  fi
-  if ! wget -q --no-cache -O "${dir_tmp}/${2}.sha256sum" "${1}.sha256sum"; then
-    echo 'error: Download failed! Please check your network or try again.'
-    exit 1
-  fi
+log () {
+  echo $@
+  logger -t $LOGGER_TAG "$@"
 }
 
-check_sum() {
-  (
-    cd "${dir_tmp}" || exit
-    for i in "${dir_tmp}"/*.sha256sum; do
-      if ! sha256sum -c "${i}"; then
-        echo 'error: Check failed! Please check your network or try again.'
-        exit 1
-      fi
-    done
-  )
-}
+log "fetching geoip url..."
+GEOIP_URL=$(curl -sL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq -r '.assets[].browser_download_url')
+log "geoip url: $GEOIP_URL"
 
-install_file() {
-  mkdir -p ${DAT_PATH} 2>/dev/null
-  cp -af "${dir_tmp}"/${file_dlc} "${DAT_PATH}"/${file_dlc}
-  cp -af "${dir_tmp}"/${file_ip} "${DAT_PATH}"/${file_ip}
-  rm -r "${dir_tmp}"
-}
+log "fetching geosite url..."
+GEOSITE_URL=$(curl -sL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest | jq -r '.assets[].browser_download_url')
+log "geosite url: $GEOSITE_URL"
 
-main() {
-  echo "Updating geoip.dat and geosite.dat"
-  download_files $DOWNLOAD_LINK_GEOIP $file_ip
-  download_files $DOWNLOAD_LINK_GEOSITE $file_dlc
-  check_sum
-  install_file
-}
+GEOIP_PATH=/etc/mosdns/geoip.dat
+GEOSITE_PATH=/etc/mosdns/geosite.dat
 
-main "$@"
+log "geoip.dat will be saved as $GEOIP_PATH"
+log "geosite.dat will be saved as $GEOSITE_PATH"
+
+log "downloading geoip.dat..."
+curl -o /tmp/geoip.dat -sL $GEOIP_URL
+if [ $? -ne 0 ]; then
+  log "failed to download latest geoip.dat, not updating!"
+else
+  mv /tmp/geoip.dat $GEOIP_PATH
+  log "v2ray geoip.dat updated"
+fi
+
+log "downloading geosite.dat..."
+curl -o /tmp/geosite.dat -sL $GEOSITE_URL
+if [ $? -ne 0 ]; then
+  log "failed to download latest geosite.dat, not updating!"
+else
+  mv /tmp/geosite.dat $GEOSITE_PATH
+  log "v2ray geosite.dat updated"
+fi
