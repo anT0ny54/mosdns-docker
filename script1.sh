@@ -1,18 +1,15 @@
 #!/bin/sh
 
-set -e
+HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
+NEW_HOSTS="hosts"
+HOSTS_PATH="/etc/mosdns/hosts"
 
-# crontab 0 */2 * * *  /path/to/update_hosts_block.sh
+# Grab hosts file
+wget -O $NEW_HOSTS $HOSTS_URL
 
-if [ -f /etc/mosdns/hosts ]
-  then
-    echo "Original hosts file found."
-  else
-    cp /etc/mosdns/hosts /etc/mosdns/hosts.original
-fi
+# Backup old hosts file
+cp -v $HOSTS_PATH ${HOSTS_PATH}.bak$(date -u +%s)
+cp -v $NEW_HOSTS $HOSTS_PATH
 
-cp /etc/mosdns/hosts.original /etc/mosdns/hosts
-
-wget -O /etc/mosdns/hosts https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt
-
-exit 0;
+# Clean up old downloads
+rm $NEW_HOSTS*
