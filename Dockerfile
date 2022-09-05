@@ -23,7 +23,7 @@ COPY hosts /hosts
 
 COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
-RUN apk add --no-cache supervisor ca-certificates wget curl jq cron \
+RUN apk add --no-cache supervisor ca-certificates curl jq cron \
 	&& mkdir /etc/mosdns
 ADD entry.sh /entry.sh
 ADD entrypoint.sh /entrypoint.sh
