@@ -1,2 +1,2 @@
-0 */6 * * * /script.sh >> /var/log/script.log
-0 */6 * * * /script1.sh >> /var/log/script1.log
+0 */12 * * * /script.sh >> /var/log/script.log
+0 */12 * * * /script1.sh >> /var/log/script1.log
