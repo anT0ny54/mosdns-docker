@@ -19,20 +19,16 @@ RUN apk add --no-cache ca-certificates curl \
 	&& mkdir /etc/mosdns
 ADD install_geodata.sh /etc/mosdns/install_geodata.sh
 COPY install_geodata.sh /etc/mosdns/install_geodata.sh
-ADD install_hosts.sh /etc/mosdns/install_hosts.sh
-COPY install_hosts.sh /etc/mosdns/install_hosts.sh
 ADD entrypoint.sh /etc/mosdns/entrypoint.sh
 ADD config.yaml /etc/mosdns/config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /etc/mosdns/geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /etc/mosdns/geosite.dat
-ADD hosts /etc/mosdns/hosts
-COPY hosts /etc/mosdns/hosts
+ADD blocklist.txt /etc/mosdns/blocklist.txt
 ENV PORT=8080
 ENV DOH_PATH=/dns-query
 EXPOSE 8080
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod +x /etc/mosdns/install_geodata.sh
-RUN chmod +x /etc/mosdns/install_hosts.sh
 RUN chmod +x /etc/mosdns/entrypoint.sh
 ENTRYPOINT [ "sh","/etc/mosdns/entrypoint.sh" ]
