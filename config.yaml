@@ -3,13 +3,13 @@ log:
 
 data_providers:
   - tag: geosite
-    file: ./geosite.dat
+    file: /etc/mosdns/geosite.dat
     auto_reload: true
   - tag: geoip
-    file: ./geoip.dat
+    file: /etc/mosdns/geoip.dat
     auto_reload: true
   - tag: hosts
-    file: ./hosts
+    file: /etc/mosdns/hosts
     auto_reload: true
 
 plugins:
