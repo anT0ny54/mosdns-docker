@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -f /etc/mosdns/install_geodata.sh ]; then
+if [ ! -f /etc/mosdns/config.yaml ]; then
 	mkdir -p /etc/mosdns/
 	cp -u /config.yaml /etc/mosdns/config.yaml
     	cp -u /geosite.dat /etc/mosdns/geosite.dat
