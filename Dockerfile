@@ -38,8 +38,6 @@ ADD geoip.dat /etc/mosdns/geoip.dat
 COPY geoip.dat /etc/mosdns/geoip.dat
 ADD geosite.dat /etc/mosdns/geosite.dat
 COPY geosite.dat /etc/mosdns/geosite.dat
-RUN sh /etc/mosdns/install_geodata.sh
-RUN sh /etc/mosdns/install_hosts.sh
 ENV PORT=8080
 ENV DOH_PATH=/dns-query
 EXPOSE 8080
