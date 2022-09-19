@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for (( ; ; ))
+while :
 do
    echo "infinite loops hosts"
 
