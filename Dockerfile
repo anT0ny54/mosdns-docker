@@ -32,7 +32,7 @@ ENV DOH_PATH=/dns-query
 EXPOSE 8080
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
-RUN chmod +x /etc/mosdns/geodata.sh
+RUN chmod +x /etc/mosdns/install_geodata.sh
 RUN chmod +x /etc/mosdns/install_hosts.sh
 RUN chmod +x /etc/mosdns/entrypoint.sh
 ENTRYPOINT [ "sh","/etc/mosdns/entrypoint.sh" ]
