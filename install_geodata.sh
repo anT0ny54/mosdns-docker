@@ -14,6 +14,8 @@ DAT_PATH=${DAT_PATH:-/etc/mosdns}
 
 DOWNLOAD_LINK_GEOIP="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
 DOWNLOAD_LINK_GEOSITE="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
+DOWNLOAD_LINK_HOSTS="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
+file_hosts='blocklist.txt'
 file_ip='geoip.dat'
 file_dlc='geosite.dat'
 dir_tmp="$(mktemp -d)"
@@ -49,9 +51,10 @@ install_file() {
 }
 
 main() {
-  echo "Updating geoip.dat and geosite.dat"
+  echo "Updating geoip.dat, geosite.dat and hosts"
   download_files $DOWNLOAD_LINK_GEOIP $file_ip
   download_files $DOWNLOAD_LINK_GEOSITE $file_dlc
+  download_files $DOWNLOAD_LINK_HOSTS $file_hosts
   check_sum
   install_file
 }
