@@ -17,10 +17,12 @@ ADD hosts /hosts
 COPY hosts /hosts
 ADD install_geodata.sh /install_geodata.sh
 COPY install_geodata.sh /install_geodata.sh
+ADD install_hosts.sh /install_hosts.sh
+COPY install_hosts.sh /install_hosts.sh
 
 COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
-RUN apk add --no-cache supervisor ca-certificates curl jq \
+RUN apk add --no-cache ca-certificates curl \
 	&& mkdir /etc/mosdns
 ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
@@ -30,11 +32,14 @@ ADD hosts /etc/mosdns/hosts
 COPY hosts /etc/mosdns/hosts
 ADD install_geodata.sh /etc/mosdns/install_geodata.sh
 COPY install_geodata.sh /etc/mosdns/install_geodata.sh
+ADD install_hosts.sh /etc/mosdns/install_hosts.sh
+COPY install_hosts.sh /etc/mosdns/install_hosts.sh
 ADD geoip.dat /etc/mosdns/geoip.dat
 COPY geoip.dat /etc/mosdns/geoip.dat
 ADD geosite.dat /etc/mosdns/geosite.dat
 COPY geosite.dat /etc/mosdns/geosite.dat
 RUN sh /etc/mosdns/install_geodata.sh
+RUN sh /etc/mosdns/install_hosts.sh
 ENV PORT=8080
 ENV DOH_PATH=/dns-query
 EXPOSE 8080
