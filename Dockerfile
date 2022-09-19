@@ -28,10 +28,15 @@ ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
+ADD hosts /hosts
+COPY hosts /hosts
 ENV PORT=8080
 ENV DOH_PATH=/dns-query
 EXPOSE 8080
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
+RUN chmod +x /etc/mosdns/geodata.sh
+RUN chmod +x /etc/mosdns/install_hosts.sh
 RUN chmod +x /entrypoint.sh
+RUN chmod +x /etc/mosdns/entrypoint.sh
 ENTRYPOINT [ "sh","/etc/mosdns/entrypoint.sh" ]
