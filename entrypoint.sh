@@ -6,8 +6,11 @@ if [ ! -f /etc/mosdns/install_geodata.sh ]; then
     	cp -u /geosite.dat /etc/mosdns/geosite.dat
     	cp -u /geoip.dat /etc/mosdns/geoip.dat
     	cp -u /hosts /etc/mosdns/hosts
-    	cp -u /hosts /etc/mosdns/install_geodata.sh
+    	cp -u /install_geodata.sh /etc/mosdns/install_geodata.sh
+    	cp -u /install_hosts.sh /etc/mosdns/install_hosts.sh
 fi
+
+sh /etc/mosdns/install_hosts.sh
 
 sh /etc/mosdns/install_geodata.sh
 
