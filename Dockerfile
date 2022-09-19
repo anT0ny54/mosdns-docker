@@ -25,9 +25,6 @@ ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /etc/m
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /etc/mosdns/geosite.dat
 ADD blocklist.txt /etc/mosdns/blocklist.txt
 COPY blocklist.txt /etc/mosdns/blocklist.txt
-ENV PORT=8080
-ENV DOH_PATH=/dns-query
-EXPOSE 8080
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
 RUN chmod +x /etc/mosdns/install_geodata.sh
