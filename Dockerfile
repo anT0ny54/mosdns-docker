@@ -17,8 +17,6 @@ COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
 RUN apk add --no-cache ca-certificates curl \
 	&& mkdir /etc/mosdns
-ADD hosts /etc/mosdns/hosts
-COPY hosts /etc/mosdns/hosts
 ADD install_geodata.sh /etc/mosdns/install_geodata.sh
 COPY install_geodata.sh /etc/mosdns/install_geodata.sh
 ADD install_hosts.sh /etc/mosdns/install_hosts.sh
