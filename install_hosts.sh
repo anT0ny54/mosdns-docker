@@ -19,5 +19,3 @@ cp -v $NEW_HOSTS $HOSTS_PATH
 
 # Clean up old downloads
 rm $NEW_HOSTS*
-
-main "$@"
