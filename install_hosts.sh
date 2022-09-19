@@ -14,7 +14,7 @@ DAT_PATH=${DAT_PATH:-/etc/mosdns}
 
 DOWNLOAD_LINK_HOSTS="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
 file_hosts='hosts'
-dir_tmp="$(mktemp -d)"
+dir_tmp="$(/etc/mosdns -d)"
 
 download_files() {
   if ! wget -q --no-cache -O "${dir_tmp}/${2}" "${1}"; then
