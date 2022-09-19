@@ -26,6 +26,7 @@ RUN apk add --no-cache ca-certificates curl \
 	&& mkdir /etc/mosdns
 ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
+ADD config.yaml /etc/mosdns/config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
 ADD hosts /hosts
