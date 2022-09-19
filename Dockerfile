@@ -13,28 +13,32 @@ RUN apk add --update git \
 
 FROM --platform=${TARGETPLATFORM} alpine:latest
 
-ADD crontab.txt /crontab.txt
-ADD script.sh /script.sh
-ADD script1.sh /script1.sh
-COPY entry.sh /entry.sh
-RUN /usr/bin/crontab /crontab.txt
 ADD hosts /hosts
 COPY hosts /hosts
+ADD install_geodata.sh /install_geodata.sh
+COPY install_geodata.sh /install_geodata.sh
 
 COPY --from=builder /root/mosdns/mosdns /usr/bin/
 
 RUN apk add --no-cache supervisor ca-certificates curl jq \
 	&& mkdir /etc/mosdns
-ADD entry.sh /entry.sh
 ADD entrypoint.sh /entrypoint.sh
 ADD config.yaml /config.yaml
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geoip.dat /geoip.dat
 ADD https://github.com/Loyalsoldier/v2ray-rules-dat/raw/release/geosite.dat /geosite.dat
 ADD hosts /etc/mosdns/hosts
 COPY hosts /etc/mosdns/hosts
-COPY supervisord.conf /etc/supervisord.conf
+ADD install_geodata.sh /etc/mosdns/install_geodata.sh
+COPY install_geodata.sh /etc/mosdns/install_geodata.sh
+ADD geoip.dat /etc/mosdns/geoip.dat
+COPY geoip.dat /etc/mosdns/geoip.dat
+ADD geosite.dat /etc/mosdns/geosite.dat
+COPY geosite.dat /etc/mosdns/geosite.dat
+RUN sh /etc/mosdns/install_geodata.sh
+ENV PORT=8080
+ENV DOH_PATH=/dns-query
+EXPOSE 8080
 VOLUME /etc/mosdns
 EXPOSE 53/udp 53/tcp
-RUN chmod +x /entry.sh
 RUN chmod +x /entrypoint.sh
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+ENTRYPOINT [ "sh","/etc/mosdns/entrypoint.sh" ]
