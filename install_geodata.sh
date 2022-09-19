@@ -54,7 +54,7 @@ main() {
   echo "Updating geoip.dat, geosite.dat and hosts"
   download_files $DOWNLOAD_LINK_GEOIP $file_ip
   download_files $DOWNLOAD_LINK_GEOSITE $file_dlc
-  wget -O $DAT_PATH $DOWNLOAD_LINK_HOSTS
+  wget -O /etc/mosdns/blocklist.txt $DOWNLOAD_LINK_HOSTS
   check_sum
   install_file
 }
