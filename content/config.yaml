@@ -1,0 +1,102 @@
+log:
+  level: info
+
+data_providers:
+  - tag: geosite
+    file: "/etc/mosdns/geosite.dat"
+    auto_reload: true
+  - tag: geoip
+    file: "/etc/mosdns/geoip.dat"
+    auto_reload: true
+  - tag: hosts
+    file: "/etc/mosdns/hosts"
+    auto_reload: true
+
+plugins:
+  - tag: "forward_upstream"
+    type: "fast_forward"
+    args:
+      upstream:
+        - addr: 'https://family.adguard-dns.com/dns-query'
+          dial_addr: '94.140.14.15:443'
+          trusted: true 
+          
+  - tag: "mem_cache"
+    type: "cache"
+    args:
+      size: 4096
+      lazy_cache_ttl: 86400
+      lazy_cache_reply_ttl: 30
+
+  - tag: "add_ecs"
+    type: "ecs"
+    args:
+      auto: true
+      force_overwrite: false  
+
+  - tag: "hosts"
+    type: "hosts"
+    args:
+      hosts:
+        - "example.example 127.0.0.1"
+
+  - tag: query_is_blacklist_domain
+    type: query_matcher
+    args:
+      domain:
+        - 'provider:geosite:category-ads-all'
+        - 'provider:geosite:category-porn'
+        - 'provider:geosite:win-spy'
+        - 'provider:geosite:category-vpnservices'
+        - 'provider:hosts'
+ 
+  - tag: response_has_blacklist_ip
+    type: response_matcher
+    args:
+      ip:
+        - 'provider:geoip:cn'
+      # - "192.168.1.1/24"
+  # geoip support two-letter country code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+  - tag: "forward"
+    type: "sequence"
+    args:
+      exec:
+        - _misc_optm
+        - mem_cache
+      # - hosts
+
+      # Block AAAA dns request for dual-stack domains
+      # - _prefer_ipv4
+      
+      # Block A dns request for dual-stack domains
+      # - _prefer_ipv6
+        
+        # AD blocking
+        - if: query_is_blacklist_domain
+          exec:
+            - _new_nxdomain_response
+            - _return
+        
+        # If you wish to disable ECS, comment out following line.
+        - add_ecs
+
+        - forward_upstream
+      
+      # Block CN IP responses.
+      # - if: response_has_blacklist_ip
+      #   exec:
+      #     - _drop_response
+      #     - _return
+
+        - _return
+
+servers:
+  - exec: forward    
+    timeout: 5    
+    listeners:   
+      - protocol: http
+        addr: ":PORT_PLACEHOLDER"   
+        url_path: "PATH_PLACEHOLDER"
+        get_user_ip_from_header: "X-Forwarded-For"
+        
