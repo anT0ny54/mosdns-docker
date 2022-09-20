@@ -1,0 +1,39 @@
+name: Deploy to Koyeb
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+    - '.github/**'
+    - 'lists/**'
+    - '*.txt'
+    - '*.yaml'
+    - '*.conf'
+    - '*.txt'
+    - '*.sh'
+    - '*.py'
+    - 'README.md'
+  schedule:
+    - cron: '15 17 * * *'
+
+env:
+  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker build
+        run: docker build --rm=false -t ghcr.io/anT0ny54/mosdns:latest
+      - name: Docker login
+        run: echo $GHCR_TOKEN | docker login ghcr.io -u anT0ny54 --password-stdin
+      - name: Docker push
+        run: docker push ghcr.io/anT0ny54/mosdns:latest
+      - name: Install and configure the Koyeb CLI
+        uses: koyeb-community/install-koyeb-cli@v2
+        with:
+          api_token: "${{ secrets.KOYEB_TOKEN }}"
+      - name: Deploy to Koyeb
+        run: koyeb service redeploy app_name/service_name
+        
