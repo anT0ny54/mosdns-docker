@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Docker build
-        run: docker build --rm=false -t ghcr.io/anT0ny54/mosdns:latest
+        run: docker build --rm=false -t ghcr.io/anT0ny54/mosdns:v*.*.*
       - name: Docker login
         run: echo $GHCR_TOKEN | docker login ghcr.io -u anT0ny54 --password-stdin
       - name: Docker push
