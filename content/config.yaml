@@ -18,6 +18,7 @@ plugins:
     args:
       upstream:
         - addr: 'https://family.adguard-dns.com/dns-query'
+        - addr: 'tls://family.adguard-dns.com'
           
   - tag: "mem_cache"
     type: "cache"
