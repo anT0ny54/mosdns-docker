@@ -19,6 +19,7 @@ plugins:
       upstream:
         - addr: 'https://family.adguard-dns.com/dns-query'
         - addr: 'tls://family.adguard-dns.com'
+        - addr: 'https://family.anyresolver.tk/dns-query'
           
   - tag: "mem_cache"
     type: "cache"
