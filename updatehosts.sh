@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
+HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistfamilywithregex/main/export/blocklist.txt"
 NEW_HOSTS="hosts"
 HOSTS_PATH="./content/hosts"
 
