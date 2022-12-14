@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistwithregex/main/export/blocklist.txt"
+HOSTS_URL="https://raw.githubusercontent.com/t0ny54/blocklistfamilywithregex/main/export/blocklist.txt"
 GEOIP_URL="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat"
 GEOSITE_URL="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat"
 
