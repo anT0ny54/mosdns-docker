@@ -4,10 +4,10 @@ log:
 data_providers:
   - tag: geosite
     file: "/etc/mosdns/geosite.dat"
-    auto_reload: false
+    auto_reload: true
   - tag: geoip
     file: "/etc/mosdns/geoip.dat"
-    auto_reload: false
+    auto_reload: true
   - tag: hosts
     file: "/etc/mosdns/hosts"
     auto_reload: true
@@ -23,7 +23,7 @@ plugins:
   - tag: "mem_cache"
     type: "cache"
     args:
-      size: 32
+      size: 4096
       lazy_cache_ttl: 86400
       lazy_cache_reply_ttl: 30
 
@@ -43,6 +43,10 @@ plugins:
     type: query_matcher
     args:
       domain:
+        - 'provider:geosite:category-ads-all'
+        - 'provider:geosite:category-porn'
+        - 'provider:geosite:win-spy'
+        - 'provider:geosite:category-vpnservices'
         - 'provider:hosts'
  
   - tag: response_has_blacklist_ip
